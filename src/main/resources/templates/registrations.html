@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<meta charset="UTF-8">
+<head>
+    <title>Регистрация</title>
+    <script>
+        function showFields() {
+            var role = document.getElementById("role").value;
+            var fieldsContainer = document.getElementById("fields-container");
+            fieldsContainer.innerHTML = "";
+            if (role === "manager") {
+                fieldsContainer.innerHTML = `
+          <label for="fullName">ФИО:</label>
+          <input type="text" id="fullName" name="fullName" required>
+          <label for="organization">Организация:</label>
+          <input type="text" id="organization" name="organization" required>
+        `;
+            } else if (role === "administrator") {
+                fieldsContainer.innerHTML = `
+          <label for="fullName">ФИО:</label>
+          <input type="text" id="fullName" name="fullName" required>
+        `;
+            } else if (role === "student") {
+                fieldsContainer.innerHTML = `
+          <label for="fullName">ФИО:</label>
+          <input type="text" id="fullName" name="fullName" required>
+          <label for="info">Информация:</label>
+          <textarea id="info" name="info" required></textarea>
+        `;
+            } else if (role === "tutor") {
+                fieldsContainer.innerHTML = `
+          <label for="fullName">ФИО:</label>
+          <input type="text" id="fullName" name="fullName" required>
+          <label for="experience">Опыт:</label>
+          <input type="text" id="experience" name="experience" required>
+          <label for="info">Информация:</label>
+          <textarea id="info" name="info" required></textarea>
+        `;
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Регистрация</h1>
+<form action="/" method="POST">
+<!--    вот здесь настроить все-->
+    <label for="role">Выберите роль:</label>
+    <select id="role" name="role" onchange="showFields()" required>
+        <option value="">Выберите роль</option>
+        <option value="manager">Менеджер</option>
+        <option value="administrator">Администратор</option>
+        <option value="student">Студент</option>
+        <option value="tutor">Преподаватель</option>
+    </select>
+
+    <div id="fields-container"></div>
+
+    <input type="submit" value="Зарегистрироваться">
+</form>
+</body>
+</html>

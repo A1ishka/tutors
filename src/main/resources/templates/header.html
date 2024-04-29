@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<header th:fragment="header">
+    <nav>
+        <ul>
+            <li><a href="/homepage">Главная</a></li>
+            <li><a href="/">Об организации</a></li>
+            <li th:if="${isLoggedIn}">
+                <a href="/logout">Выйти</a>
+            </li>
+            <li th:unless="${isLoggedIn}">
+                <a href="/login">Войти</a>
+            </li>
+        </ul>
+    </nav>
+</header>

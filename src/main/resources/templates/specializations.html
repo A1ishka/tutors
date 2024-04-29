@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Преподаватели и специализации</title>
+  <meta charset="UTF-8">
+  <style>
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 20px;
+    }
+
+    .teacher-card {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<h1>Преподаватели и специализации</h1>
+
+<h2>Специализации</h2>
+<label for="dynamic-select">Выберите специализацию</label><select id="dynamic-select">
+<!--  <option value="">Выберите специализацию</option>-->
+  <th:block th:each="specialization : ${specializations}">
+    <option th:value="${specialization.specializationId}" th:text="${specialization.getSpecializationName()}"></option>
+  </th:block>
+</select>
+
+<h2>Преподаватели</h2>
+<div class="grid-container">
+  <a th:each="teacher : ${tutors}" th:href="@{/tutor/{id}(id=${teacher.tutorId})}">
+
+
+    <div class="teacher-card">
+      <h3 th:text="${teacher.fullName}"></h3>
+      <p><strong>Опыт:</strong> <span th:text="${teacher.experience}"></span></p>
+      <p th:text="${teacher.info}"></p>
+    </div>
+  </a>
+</div>
+</body>
+</html>

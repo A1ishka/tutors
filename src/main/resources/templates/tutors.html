@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Список преподавателей</title>
+    <meta charset="UTF-8">
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-gap: 20px;
+        }
+
+        .teacher-card {
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>Список преподавателей</h1>
+
+<div class="grid-container">
+    <div th:each="teacher : ${tutors}" class="teacher-card">
+        <h3 th:text="${teacher.fullName}"></h3>
+        <p><strong>Опыт:</strong> <span th:text="${teacher.experience}"></span></p>
+        <p th:text="${teacher.info}"></p>
+        <p><strong>Специализация:</strong> <span th:if(specializationTutors.tutor==teacher) th:text="${specializationTutors.get()}"></span></p>
+<!--        вот тут нормально настроить специализацию для преподов и добавить это же для страницы преподов-->
+    </div>
+</div>
+</body>
+</html>

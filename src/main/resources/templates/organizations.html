@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Организации</title>
+    <meta charset="UTF-8">
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+        }
+        .organization-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h2>Организации</h2>
+<div class="grid-container">
+    <a th:each="organization : ${organizations}" th:href="@{/organisation/{id}(id=${organization.organizationId})}">
+        <div class="organization-card">
+            <h3 th:text="${organization.organizationName}"></h3>
+            <p><strong>Год основания:</strong> <span th:text="${organization.yearFounded}"></span></p>
+            <p th:text="${organization.organizationDescription}"></p>
+        </div>
+    </a>
+</div>
+</body>
+</html>
