@@ -5,6 +5,7 @@ import com.makogon.tutor.Role;
 import com.makogon.tutor.model.CourseStudent;
 import com.makogon.tutor.model.LessonStudent;
 import com.makogon.tutor.model.Student;
+import com.makogon.tutor.service.CourseService;
 import com.makogon.tutor.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class StudentController {
 
+    private final CourseService courseService;
     private final StudentService studentService;
     private final AuthorityController authorityController;
 
@@ -73,7 +75,7 @@ public class StudentController {
         model.addAttribute("lessonStudents", studentService.getLessonStudents());
         model.addAttribute("user", authorityController.user);
 //        model.addAttribute("administrator", Role.ADMINISTRATOR);
-        return "lessonStudents";
+        return "lesson-students";
     }
 
     @PostMapping("/lessonStudent/delete/{lessonStudentId}")
@@ -96,53 +98,71 @@ public class StudentController {
         return "redirect:/lessonStudent";
     }
 
-    @GetMapping("/lessonStudent/{lessonStudentId}")
-    public String showLessonStuden(@PathVariable String lessonStudentId, Model model) throws ChangeSetPersister.NotFoundException {
-        long longId = IdToLong.convert(lessonStudentId);
-        model.addAttribute("lessonStudent", studentService.getLessonStudent(longId));
-        model.addAttribute("user", authorityController.user);
-        model.addAttribute("administrator", Role.ADMINISTRATOR);
-        return "lessonStudent-info";
-    }
+//    @GetMapping("/lessonStudent/{lessonStudentId}")
+//    public String showLessonStuden(@PathVariable String lessonStudentId, Model model) throws ChangeSetPersister.NotFoundException {
+//        long longId = IdToLong.convert(lessonStudentId);
+//        model.addAttribute("lessonStudent", studentService.getLessonStudent(longId));
+//        model.addAttribute("user", authorityController.user);
+//        model.addAttribute("administrator", Role.ADMINISTRATOR);
+//        return "lessonStudent-info";
+//    }
 
     //for courses of student
 
-    @GetMapping("/courseStudents")
+    @GetMapping("/course-students")
     public String showCourseStudents(Model model) {
         model.addAttribute("courseStudent", studentService.getCourseStudents());
         model.addAttribute("user", authorityController.user);
 //        model.addAttribute("administrator", Role.ADMINISTRATOR);
-        return "lessonStudents";
+        return "success";
     }
-
-    @PostMapping("/courseStudent/delete/{courseStudentId}")
+    @GetMapping("/courses/{studentId}")
+    public String showCoursesForStudent(@PathVariable String studentId, Model model) throws ChangeSetPersister.NotFoundException {
+        long longId = IdToLong.convert(studentId);
+        model.addAttribute("courseStudents", studentService.getCoursesForStudent(longId));
+//        model.addAttribute("user", authorityController.user);
+//        model.addAttribute("administrator", Role.ADMINISTRATOR);
+        return "courses-student";
+    }
+    @PostMapping("/course-students/delete/{courseStudentId}")
     public String deleteCourseStudent(@PathVariable String courseStudentId) {
         long longId = IdToLong.convert(courseStudentId);
         studentService.deleteCourseStudent(longId);
-        return "redirect:/courseStudent";
+        return "redirect:/course-students";
     }
 
-    @PostMapping("/courseStudent/add")
-    public String addCourseStudent(CourseStudent courseStudent) {
-        studentService.saveCourseStudent(courseStudent);
-        return "redirect:/courseStudent";
+    @PostMapping("/course-students/add/{courseId}/{userId}")
+    public String addCourseStudent(@PathVariable("courseId") long courseId, @PathVariable("userId") long userId, Model model) {
+
+        try {
+            CourseStudent courseStudent = new CourseStudent();
+            courseStudent.setCourse(courseService.getCourse(courseId));
+            courseStudent.setStudent(studentService.getStudentByUserId(userId));
+            courseStudent.setCourseStatus("Зарегистрирован");
+            studentService.saveCourseStudent(courseStudent);
+            model.addAttribute("successMessage", "Курс успешно добавлен!");
+        } catch (ChangeSetPersister.NotFoundException exception) {
+            model.addAttribute("successMessage", "Курс не добавлен! Что-то пошло не так...");
+        }
+
+        return "redirect:/course-students";
     }
 
-    @PostMapping("/courseStudent/edit/{courseStudentId}")
+    @PostMapping("/course-students/edit/{courseStudentId}")
     public String editCourseStudent(@PathVariable String courseStudentId, CourseStudent courseStudent) {
         long longId = IdToLong.convert(courseStudentId);
         studentService.editCourseStudent(longId, courseStudent);
-        return "redirect:/courseStudent";
+        return "redirect:/course-students";
     }
 
-    @GetMapping("/courseStudent/{courseStudentId}")
-    public String showCourseStudent(@PathVariable String courseStudentId, Model model) throws ChangeSetPersister.NotFoundException {
-        long longId = IdToLong.convert(courseStudentId);
-        model.addAttribute("courseStudent", studentService.getCourseStudent(longId));
-        model.addAttribute("user", authorityController.user);
-//        model.addAttribute("administrator", Role.ADMINISTRATOR);
-        model.addAttribute("manager", Role.MANAGER);
-
-        return "courseStudent-info";
-    }
+//    @GetMapping("/courseStudent/{courseStudentId}")
+//    public String showCourseStudent(@PathVariable String courseStudentId, Model model) throws ChangeSetPersister.NotFoundException {
+//        long longId = IdToLong.convert(courseStudentId);
+//        model.addAttribute("courseStudent", studentService.getCourseStudent(longId));
+//        model.addAttribute("user", authorityController.user);
+////        model.addAttribute("administrator", Role.ADMINISTRATOR);
+//        model.addAttribute("manager", Role.MANAGER);
+//
+//        return "courseStudent-info";
+//    }
 }

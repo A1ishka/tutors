@@ -3,20 +3,123 @@
 <head>
     <title>Информация о преподавателе</title>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+<style>
+    * {
+        font-size: x-large;
+        align-items: center;
+        margin: auto;
+    }
+    header {
+        text-align: center;
+        background: #31412b;
+        color: #f2f2f2;
+        margin-bottom: 30px;
+    }
+    header a{
+        color: #f2f2f2;
+    }
+    .container {
+        border: 1px solid #78e142;
+        background-color: #b8f3b8;
+        padding: 20px;
+        margin-bottom: 20px;
+        margin-top: 150px;
+    }
+
+    h1 {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    h2 {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    form {
+        margin-top: 10px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        width: 100%;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+    select, input{
+        padding: 10px;
+        margin: auto;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 95%;
+        height: 100%;
+    }
+</style>
 <body>
-<h1>Информация о преподавателе</h1>
+<div th:insert ="~{header :: header}"></div>
 
-<div>
-    <h3 th:text="${tutor.fullName}"></h3>
-    <p><strong>Опыт:</strong> <span th:text="${tutor.experience}"></span></p>
-    <p th:text="${tutor.info}"></p>
-    <p>
-        <strong>Специализация:</strong>
-        <div th:each="specializations : ${specializationTutors}"><span th:text="${specializations}"></span></div>
-<!--    сделать умный поиск - при нажатии на специализацию переходить в режим поиска преподавателей по специализации-->
-    </p>
+<div class="container">
+    <h1>Информация о преподавателе</h1>
+    <div>
+        <h3 th:text="${tutor.fullName}"></h3>
+        <p><strong>Опыт:</strong> <span th:text="${tutor.experience}"></span></p>
+        <p th:text="${tutor.info}"></p>
+        <p>
+            <strong>Специализация:</strong>
+        <div th:each="specializations : ${specializationTutors}"><span
+                th:text="${specializations.specialization.specializationName}"></span></div>
+        </p>
+    </div>
 
+    <div class="container">
+        <h2>Запись на урок</h2>
+        <!--/*@thymesVar id="сlass8" type="com.makogon.tutor.model.Class"*/-->
+        <form action="/success" method="get" >
+<!--        <form action="/class/add" method="post" >-->
+<!--              th:object="${сlass8}">-->
+            <input type="hidden" name="tutor" th:value="${tutor}" />
+            <p>
+                <label for="specialization">Специализация:</label>
+                <select id="specialization" name="specializationId" onchange="updateSpecialization()">
+                    <option th:each="specializations : ${specializationTutors}"
+                            th:value="${specializations.specialization.specializationId}"
+                            th:text="${specializations.specialization.specializationName}"></option>
+                </select>
+<!--                <input type="hidden" id="hidden" name="h" th:value="${сlass8}"/>-->
+                <input type="hidden" id="specializationHidden" name="specialization" />
+            </p>
+            <p>
+                <label for="durationMinutes">Длительность урока (в минутах):</label>
+                <input type="number" id="durationMinutes" name="durationMinutes" value="90" />
+<!--                <input type="number" id="duration" name="duration" value="90" th:field="*{durationMinutes}"/>-->
+            </p>
+            <p>
+                <label for="price">Цена урока:</label>
+                <input type="number" id="price" name="price" value="30.0" step="0.5"/>
+            </p>
+            <button type="submit">Записаться</button>
+        </form>
+    </div>
 </div>
+
+<div th:insert ="~{footer :: footer}"></div>
+<script>
+    function updateSpecialization() {
+        let selectElement = document.getElementById("specialization");
+        let hiddenInput = document.getElementById("specializationHidden");
+        console.log(selectElement)
+        console.log(hiddenInput)
+        if(selectElement!=null) hiddenInput.value = selectElement.options[selectElement.selectedIndex].value;
+        console.log(hiddenInput)
+    }
+</script>
 </body>
 </html>

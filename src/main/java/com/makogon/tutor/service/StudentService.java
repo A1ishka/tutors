@@ -31,6 +31,9 @@ public class StudentService {
     public Student getStudent(long studentId) throws ChangeSetPersister.NotFoundException {
         return studentRepository.findByStudentId(studentId);
     }
+    public Student getStudentByUserId(long userId){
+        return studentRepository.findByUserUserId(userId);
+    }
     public void editStudent(long studentId, Student student) {
         student.setStudentId(studentId);
         studentRepository.save(student);
@@ -79,5 +82,9 @@ public class StudentService {
     public void editCourseStudent(long courseStudentId, CourseStudent courseStudent) {
         courseStudent.setCourseStudentId(courseStudentId);
         courseStudentRepository.save(courseStudent);
+    }
+
+    public List<LessonStudent> getClassesForTutor(Tutor tutor) {
+        return lessonStudentRepository.findAllByaClassTutor(tutor);
     }
 }

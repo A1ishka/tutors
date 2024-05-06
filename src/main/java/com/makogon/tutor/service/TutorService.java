@@ -1,5 +1,6 @@
 package com.makogon.tutor.service;
 
+import com.makogon.tutor.model.Organization;
 import com.makogon.tutor.model.OrganizationTutor;
 import com.makogon.tutor.model.SpecializationTutor;
 import com.makogon.tutor.model.Tutor;
@@ -40,8 +41,7 @@ public class TutorService {
 
     public List<Tutor> searchTutors(String query) {
         // Используйте методы запросов JPA или создайте собственный метод запроса с помощью аннотации @Query
-        List<Tutor> tutors = tutorRepository.findByFullNameContainingIgnoreCase(query);
-        return tutors;
+        return tutorRepository.findByFullNameContainingIgnoreCase(query);
     }
 
     //SpecializationTutor
@@ -86,4 +86,11 @@ public class TutorService {
         organizationTutorRepository.save(organizationTutor);
     }
 
+    public Tutor findByUserUserId(long userId) {
+        return tutorRepository.findByUserUserId(userId);
+    }
+
+    public List<OrganizationTutor> getOrganizationTutorsByOrganization(Organization organization) {
+        return organizationTutorRepository.findAllByOrganization(organization);
+    }
 }

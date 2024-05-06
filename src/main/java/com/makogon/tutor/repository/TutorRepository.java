@@ -11,9 +11,12 @@ import java.util.List;
 
 @Repository
 public interface TutorRepository extends JpaRepository<Tutor, Long> {
+    @SuppressWarnings("NullableProblems")
     @Override
     List<Tutor> findAll();
     Tutor findByTutorId(long tutorId);
     @Query("SELECT t FROM Tutor t WHERE LOWER(t.fullName) LIKE %:query%")
     List<Tutor> findByFullNameContainingIgnoreCase(@Param("query") String query);
+
+    Tutor findByUserUserId(long userId);
 }

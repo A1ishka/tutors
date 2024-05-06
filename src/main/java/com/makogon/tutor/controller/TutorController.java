@@ -3,9 +3,10 @@ package com.makogon.tutor.controller;
 import com.google.gson.Gson;
 import com.makogon.tutor.IdToLong;
 import com.makogon.tutor.Role;
-import com.makogon.tutor.model.OrganizationTutor;
-import com.makogon.tutor.model.SpecializationTutor;
-import com.makogon.tutor.model.Tutor;
+import com.makogon.tutor.model.*;
+import com.makogon.tutor.model.Class;
+import com.makogon.tutor.service.OrganisationService;
+import com.makogon.tutor.service.SpecializationService;
 import com.makogon.tutor.service.TutorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -22,6 +23,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TutorController {
 
+    private final OrganisationService organisationService;
+    private final SpecializationService specializationService;
     private final TutorService tutorService;
     private final AuthorityController authorityController;
 
@@ -36,17 +39,21 @@ public class TutorController {
     @GetMapping("/tutors")
     public String showTutor(Model model) {
         model.addAttribute("tutors", tutorService.getTutors());
-        model.addAttribute("specializationTutors", tutorService.getSpecializationTutors());
+//        model.addAttribute("specializationTutors", tutorService.getSpecializationTutors());
         model.addAttribute("user", authorityController.user);
 //        model.addAttribute("administrator", Role.ADMINISTRATOR);
         return "tutors";
     }
+//    @GetMapping("/tutors")
+//    public List<Tutor> showTutor() {
+//        return tutorService.getTutors();
+//    }
 
     @PostMapping("/tutor/delete/{tutorId}")
     public String deleteTutor(@PathVariable String tutorId) {
         long longId = IdToLong.convert(tutorId);
         tutorService.deleteTutor(longId);
-        return "redirect:/tutor";
+        return "redirect:/tutors";
     }
 
     @GetMapping("/tutor/create")
@@ -57,14 +64,14 @@ public class TutorController {
     @PostMapping("/tutor/add")
     public String addTutor(Tutor tutor) {
         tutorService.saveTutor(tutor);
-        return "redirect:/tutor";
+        return "redirect:/success";
     }
 
     @PostMapping("/tutor/edit/{tutorId}")
     public String editTutor(@PathVariable String tutorId, Tutor tutor) {
         long longId = IdToLong.convert(tutorId);
         tutorService.editTutor(longId, tutor);
-        return "redirect:/tutor";
+        return "redirect:/success";
     }
 
     @GetMapping("/tutor/{tutorId}")
@@ -73,8 +80,12 @@ public class TutorController {
         Tutor tutor = tutorService.getTutor(longId);
         model.addAttribute("tutor", tutor);
         model.addAttribute("specializationTutors", tutorService.findAllByTutor(tutor));
-        model.addAttribute("user", authorityController.user);
-        model.addAttribute("administrator", Role.ADMINISTRATOR);
+//        model.addAttribute("user", authorityController.user);
+//        model.addAttribute("administrator", Role.ADMINISTRATOR);
+        Class class8 = new Class();
+        class8.setTutor(tutor);
+        class8.setSpecialization(specializationService.getSpecialization(1));
+        model.addAttribute("class8", class8);
         return "tutor-info";
     }
 
@@ -85,7 +96,7 @@ public class TutorController {
         model.addAttribute("specializationTutors", tutorService.getSpecializationTutors());
 //        model.addAttribute("user", authorityController.user);
 //        model.addAttribute("administrator", Role.ADMINISTRATOR);
-        return "specializationTutors";
+        return "specialization-tutors";
     }
 
     @PostMapping("/specializationTutor/delete/{specializationTutorId}")
@@ -97,7 +108,7 @@ public class TutorController {
 
     @GetMapping("/specializationTutor/create")
     public String createSpecializationTutor() {
-        return "specializationTutor-create";
+        return "specialization-tutor-create";
     }
 
     @PostMapping("/specializationTutor/add")
@@ -105,14 +116,12 @@ public class TutorController {
         tutorService.saveSpecializationTutor(specializationTutor);
         return "redirect:/specializationTutor";
     }
-
     @PostMapping("/specializationTutor/edit/{specializationTutorId}")
     public String editSpecializationTutor(@PathVariable String specializationTutorId, SpecializationTutor specializationTutor) {
         long longId = IdToLong.convert(specializationTutorId);
         tutorService.editSpecializationTutor(longId, specializationTutor);
         return "redirect:/specializationTutor";
     }
-
     @GetMapping("/specializationTutor/{specializationTutorId}")
     public String showSpecializationTutor(@PathVariable String specializationTutorId, Model model) throws ChangeSetPersister.NotFoundException {
         long longId = IdToLong.convert(specializationTutorId);
@@ -121,21 +130,27 @@ public class TutorController {
         model.addAttribute("administrator", Role.ADMINISTRATOR);
         return "specializationTutor-info";
     }
-
-
-    @GetMapping("/organizationTutors")
-    public String showOrganizationTutor(Model model) {
+    @GetMapping("/organization-tutors/{organizationId}")
+    public String showOrganizationTutor(@PathVariable long organizationId, Model model) throws ChangeSetPersister.NotFoundException {
+//        model.addAttribute("organization_tutors", tutorService.getOrganizationTutors());
+        Organization organization = organisationService.getOrganization(organizationId);
+        model.addAttribute("organization_tutors", tutorService.getOrganizationTutorsByOrganization(organization));
+        model.addAttribute("user", authorityController.user);
+//        model.addAttribute("administrator", Role.ADMINISTRATOR);
+        return "organization-tutors";
+    }
+    @GetMapping("/organization-tutors-for-admin")
+    public String showOrganizationTutorForAdmin(Model model) {
         model.addAttribute("organization_tutors", tutorService.getOrganizationTutors());
         model.addAttribute("user", authorityController.user);
 //        model.addAttribute("administrator", Role.ADMINISTRATOR);
-        return "organizationTutors";
+        return "organization-tutors";
     }
-
     @PostMapping("/organizationTutor/delete/{organizationTutorId}")
     public String deleteOrganizationTutor(@PathVariable String organizationTutorId) {
         long longId = IdToLong.convert(organizationTutorId);
         tutorService.deleteOrganizationTutor(longId);
-        return "redirect:/organizationTutor";
+        return "redirect:/success";
     }
 
     @GetMapping("/organizationTutor/create")
@@ -162,7 +177,7 @@ public class TutorController {
         model.addAttribute("organizationTutor", tutorService.getOrganizationTutor(longId));
         model.addAttribute("user", authorityController.user);
         model.addAttribute("administrator", Role.ADMINISTRATOR);
-        return "organizationTutor-info";
+        return "organization-tutors";
     }
 
 }

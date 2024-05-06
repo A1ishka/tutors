@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Страница студента</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<style>
+    * {
+        font-size: x-large;
+        align-items: center;
+        margin: auto;
+    }
+
+    header {
+        text-align: center;
+        background: #31412b;
+        color: #f2f2f2;
+        margin-bottom: 30px;
+    }
+
+    header a {
+        color: #f2f2f2;
+    }
+
+    .container {
+        border: 1px solid #78e142;
+        background-color: #b8f3b8;
+        padding: 20px;
+        margin-bottom: 20px;
+        margin-top: 150px;
+    }
+
+    h1 {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    h2 {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    form {
+        margin-top: 10px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        width: 100%;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+
+    select, input, textarea {
+        padding: 10px;
+        margin: auto;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 95%;
+        height: 100%;
+    }
+</style>
+<body>
+<div th:insert="~{header :: header}"></div>
+<div class="container">
+
+    <h1>Страница студента</h1>
+
+    <form th:action="@{/student/edit/{studentId}(studentId=${student.studentId})}" th:object="${student}" method="post">
+        <input type="hidden" th:field="*{studentId}">
+
+        <label for="fullName">Полное имя:</label>
+        <input type="text" id="fullName" th:field="*{fullName}" required>
+
+        <label for="info">Информация:</label>
+        <textarea id="info" th:field="*{info}"></textarea>
+
+        <button type="submit">Сохранить</button>
+    </form>
+
+    <h2>Данные студента:</h2>
+<!--    <p><strong>ID:</strong> <span th:text="${student.studentId}">-</span></p>-->
+    <p><strong>Полное имя:</strong> <span th:text="${student.fullName}">-</span></p>
+    <p><strong>Информация:</strong> <span th:text="${student.info}">-</span></p>
+
+</div>
+<div th:include="~{footer :: footer}"></div>
+</body>
+</html>

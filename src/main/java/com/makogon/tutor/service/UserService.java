@@ -17,15 +17,15 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    public boolean createUser(User user){
+    public User createUser(User user){
         if(userRepository.findByLogin(user.getLogin())!=null){
-            return false;
+            return null;
         }
-        user.setRole(userRepository.findAll().isEmpty() ? Role.ADMINISTRATOR : Role.USER);
+        user.setRole(userRepository.findAll().isEmpty() ? Role.ADMINISTRATOR : Role.STUDENT);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         log.info("Saving new user with login {}",user.getLogin());
         userRepository.save(user);
-        return true;
+        return user;
     }
 
     public List<User> getUserByRole(Role role) {
