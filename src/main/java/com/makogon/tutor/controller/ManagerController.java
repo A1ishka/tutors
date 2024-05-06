@@ -41,7 +41,7 @@ public class ManagerController {
     public String deleteManager(@PathVariable String managerId) {
         long longId = IdToLong.convert(managerId);
         managerService.deleteManager(longId);
-        return "redirect:/manager";
+        return "redirect:/success";
     }
 
     @GetMapping("/manager/create")
@@ -52,7 +52,7 @@ public class ManagerController {
     @PostMapping("/manager/add")
     public String addManager(Manager manager) {
         managerService.saveManager(manager);
-        return "redirect:/manager";
+        return "redirect:/success";
     }
 
     @PostMapping("/manager/edit/{managerId}")

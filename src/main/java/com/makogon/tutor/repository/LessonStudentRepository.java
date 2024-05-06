@@ -1,7 +1,7 @@
 package com.makogon.tutor.repository;
 
 import com.makogon.tutor.model.LessonStudent;
-import com.makogon.tutor.model.Student;
+import com.makogon.tutor.model.Tutor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +14,6 @@ public interface LessonStudentRepository extends JpaRepository<LessonStudent, Lo
     List<LessonStudent> findAllByStudentStudentId(long studentId);
 
     LessonStudent findByLessonStudentId(Long lessonStudentId);
+
+    List<LessonStudent> findAllByaClassTutor(Tutor tutor);
 }

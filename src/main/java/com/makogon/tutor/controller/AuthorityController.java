@@ -30,18 +30,25 @@ public class AuthorityController {
         return "homepage";
     }
 
-    @GetMapping("/registration")
+    @GetMapping("/registration-step-1")
     public String showRegistrationPage() {
         return "registration";
     }
+    @GetMapping("/registration-step-2")
+    public String showRegistrationPage2() {
+        return "registrations";
+    }
 
-    @PostMapping("/registration")
+    @PostMapping("/registration-step-1")
     public String registerUser(User user, Model model) {
-        if (!userService.createUser(user)) {
+        User readyUser = userService.createUser(user);
+        if (readyUser==null) {
             model.addAttribute("errorMessage", "Ошибка регистрации пользователя с логином: " + user.getLogin());
-            return "registration";
+            return "redirect:/registration-step-1";
+        }else{
+            model.addAttribute("user", readyUser);
+            return "redirect:/registration-step-2";
         }
-        return "redirect:/login";
     }
 
     @GetMapping("/login")
@@ -52,6 +59,15 @@ public class AuthorityController {
     @GetMapping("/error")
     public String showErrorPage() {
         return "error";
+    }
+
+    @GetMapping("/map")
+    public String showMap() {
+        return "map";
+    }
+    @GetMapping("/success")
+    public String showS() {
+        return "success";
     }
 //    @PostMapping("/login")
 //    public String login(@RequestParam("login") String login, @RequestParam("password") String password) {
