@@ -22,8 +22,6 @@ public class CourseController {
     @GetMapping("/courses")
     public String showCourses(Model model) {
         model.addAttribute("courses", courseService.getCourses());
-        model.addAttribute("user", authorityController.user);
-//        model.addAttribute("administrator", Role.ADMINISTRATOR);
         return "courses";
     }
 
@@ -31,34 +29,35 @@ public class CourseController {
     public String deleteCourse(@PathVariable String courseId) {
         long longId = IdToLong.convert(courseId);
         courseService.deleteCourse(longId);
-        return "redirect:/course";
+        return "redirect:/success";
     }
 
     @GetMapping("/course/create")
-    public String createCourse() {
+    public String createCourse(Model model) {
+        model.addAttribute("user", authorityController.user);
+        model.addAttribute("administrator", Role.ADMINISTRATOR);
         return "course-create";
     }
 
     @PostMapping("/course/add")
     public String addCourse(Course course) {
         courseService.saveCourse(course);
-        return "redirect:/course";
+        return "redirect:/success";
     }
 
     @PostMapping("/course/edit/{courseId}")
     public String editCourse(@PathVariable String courseId, Course course) {
         long longId = IdToLong.convert(courseId);
         courseService.editCourse(longId, course);
-        return "redirect:/course";
+        return "redirect:/success";
     }
 
-    @GetMapping("/class/{courseId}")
+    @GetMapping("/course/{courseId}")
     public String showCourse(@PathVariable String courseId, Model model) throws ChangeSetPersister.NotFoundException {
         long longId = IdToLong.convert(courseId);
         model.addAttribute("course", courseService.getCourse(longId));
         model.addAttribute("user", authorityController.user);
-        model.addAttribute("administrator", Role.ADMINISTRATOR);
-        return "class-info";
+        return "course-info";
     }
 
 }

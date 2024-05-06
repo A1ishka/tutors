@@ -1,10 +1,7 @@
 package com.makogon.tutor.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Entity
@@ -20,6 +17,7 @@ public class Class {
     @ManyToOne
 //    @JoinColumn(name = "tutor_id")
     private Tutor tutor;
+    @Setter
     @ManyToOne
 //    @JoinColumn(name = "specialization_id")
     private Specialization specialization;

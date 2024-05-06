@@ -1,6 +1,7 @@
 package com.makogon.tutor.service;
 
 import com.makogon.tutor.model.Class;
+import com.makogon.tutor.model.Tutor;
 import com.makogon.tutor.repository.ClassRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,5 +35,9 @@ public class ClassService {
     public void editClass(long classId, Class class8) {
         class8.setClassId(classId);
         classRepository.save(class8);
+    }
+
+    public List<Class> getClassesForTutor(Tutor tutor) {
+        return classRepository.findAllByTutor(tutor);
     }
 }

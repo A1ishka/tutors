@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание курса</title>
+</head>
+<body>
+<form action="/create-course" method="post">
+    <label for="courseName">Название курса:</label>
+    <input type="text" id="courseName" name="courseName" required>
+    <br>
+
+    <label for="description">Описание:</label>
+    <textarea id="description" name="description" required></textarea>
+    <br>
+
+    <label for="tutor">Преподаватель:</label>
+    <select id="tutor" name="tutor" required>
+        <!-- Опции для выбора преподавателя -->
+    </select>
+    <br>
+
+    <label for="specialization">Специализация:</label>
+    <select id="specialization" name="specialization" required>
+        <!-- Опции для выбора специализации -->
+    </select>
+    <br>
+
+    <label for="duration">Длительность:</label>
+    <select id="duration" name="duration" required>
+        <!-- Опции для выбора длительности -->
+    </select>
+    <br>
+
+    <label for="price">Цена:</label>
+    <input type="number" id="price" name="price" required>
+    <br>
+
+    <label for="organization">Организация:</label>
+    <select id="organization" name="organization" required>
+        <!-- Опции для выбора организации -->
+    </select>
+    <br>
+
+    <button type="submit">Создать курс</button>
+</form>
+</body>
+</html>

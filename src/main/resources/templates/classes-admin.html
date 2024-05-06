@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Classes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        * {
+            font-size: x-large;
+            align-items: center;
+            margin: auto;
+        }
+        header {
+             text-align: center;
+             background: #78e142;
+        }
+        body{
+            margin: 20px;
+        }
+        table {
+            width: 97%;
+            margin: auto;
+            border-collapse: collapse;
+            font-size: x-large;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddf8cd;
+            cursor: pointer;
+            text-size-adjust: auto;
+        }
+
+        th {
+            background-color: #78e142;
+        }
+        tr:hover {
+            background-color: #bbfc9a;
+        }
+
+        button {
+            width: 90%;
+            margin: auto;
+            padding: 10px;
+            background-color: #5c7550;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #31412b;
+        }
+
+        select {
+            padding: 10px;
+            margin: auto;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 95%;
+            height: 100%;
+        }
+    </style>
+    <script>
+        function sortTable(n) {
+            let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("myTable");
+            switching = true;
+            dir = "asc";
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (dir === "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir === "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount === 0 && dir === "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+
+        function submitForm(lessonId, lessonStudentId) {
+            const selectElement = document.getElementById('status_' + lessonId);
+            const status = selectElement.value;
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/lessonStudent/edit/' + lessonStudentId;
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'lessonId';
+            input.value = lessonId;
+            form.appendChild(input);
+
+            const inputStatus = document.createElement('input');
+            inputStatus.type = 'hidden';
+            inputStatus.name = 'status';
+            inputStatus.value = status;
+            form.appendChild(inputStatus);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function confirmDelete(lessonStudentId) {
+            if (confirm("Вы уверены, что хотите удалить этот урок?")) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/lessonStudent/delete/' + lessonStudentId;
+
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'lessonStudentId';
+                input.value = lessonStudentId;
+                form.appendChild(input);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
+</head>
+<body>
+<div th:insert ="~{header :: header}"></div>
+<h1 align="center">Все зарегистрированные занятия</h1>
+<br>
+<table id="myTable">
+    <thead>
+    <tr>
+        <th onclick="sortTable(0)">ID Занятия</th>
+        <th onclick="sortTable(1)">Преподаватель</th>
+        <th onclick="sortTable(2)">Направление</th>
+        <th onclick="sortTable(3)">Длительность (в минутах)</th>
+        <th onclick="sortTable(4)">Стоимость</th>
+        <th onclick="sortTable(5)">Статус занятия</th>
+        <th>Подтвердить изменение статуса</th>
+        <th>Удалить занятие</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="lessonStudent : ${lessonStudents}">
+        <td th:text="${lessonStudent.getAClass().classId}"></td>
+        <td th:text="${lessonStudent.getAClass().tutor.fullName}"></td>
+        <td th:text="${lessonStudent.getAClass().specialization.specializationName}"></td>
+        <td th:text="${lessonStudent.getAClass().durationMinutes}"></td>
+        <td th:text="${lessonStudent.getAClass().price}"></td>
+        <td>
+            <select id="status_${lessonStudent.getAClass().classId}">
+                <option value="confirm_wait">Ожидает подтверждения</option>
+                <option value="cancelled">Отклонено</option>
+                <option value="payment_wait">Ожидает оплаты</option>
+                <option value="paid">Оплачено</option>
+                <option value="time_moved">Перенесено</option>
+                <option value="conducted">Проведено</option>
+            </select>
+        </td>
+        <td>
+            <button th:onclick="'submitForm(' + ${lessonStudent.getAClass().classId} + ', ' + ${lessonStudent.lessonStudentId} + ')'">Подтвердить</button></td>
+        <td>
+            <button onclick="confirmDelete(${lessonStudent.lessonStudentId})">Удалить</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:insert ="~{footer :: footer}"></div>
+</body>
+</html>

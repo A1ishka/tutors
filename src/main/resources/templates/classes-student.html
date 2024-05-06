@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>My Classes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        * {
+            font-size: x-large;
+            align-items: center;
+            margin: auto;
+        }
+        header {
+            text-align: center;
+            background: #31412b;
+            color: #f2f2f2;
+        }
+        table {
+            width: 95%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddf8cd;
+            cursor: pointer;
+        }
+
+        th {
+            background-color: #31412b;
+            color: #f2f2f2;
+        }
+        tr:hover {
+              background-color: #bbfc9a;
+          }
+
+        button{
+
+        }
+    </style>
+    <script>
+        function sortTable(n) {
+            let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("myTable");
+            switching = true;
+            dir = "asc";
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (dir === "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir === "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount === 0 && dir === "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<div th:insert ="~{header :: header}"></div>
+<h1>Мои занятия</h1>
+
+<table id="myTable">
+    <thead>
+    <tr>
+        <th onclick="sortTable(0)">Class ID</th>
+        <th onclick="sortTable(1)">Tutor</th>
+        <th onclick="sortTable(2)">Specialization</th>
+        <th onclick="sortTable(3)">Duration (minutes)</th>
+        <th onclick="sortTable(4)">Price</th>
+        <th onclick="sortTable(5)">Lesson Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="lessonStudent : ${lessonStudents}">
+        <td th:text="${lessonStudent.getAClass().classId}"></td>
+        <td th:text="${lessonStudent.getAClass().tutor.fullName}"></td>
+        <td th:text="${lessonStudent.getAClass().specialization.specializationName}"></td>
+        <td th:text="${lessonStudent.getAClass().durationMinutes}"></td>
+        <td th:text="${lessonStudent.getAClass().price}"></td>
+        <td th:text="${lessonStudent.lessonStatus}"></td>
+<!--        <td th:text="${lessonStudent.getAClass()}"></td>-->
+    </tr>
+    </tbody>
+</table>
+
+<div th:insert ="~{footer :: footer}"></div>
+</body>
+</html>

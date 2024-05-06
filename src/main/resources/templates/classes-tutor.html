@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>My Classes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function sortTable(n) {
+            let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("myTable");
+            switching = true;
+            dir = "asc";
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (dir === "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir === "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount === 0 && dir === "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+
+        function submitForm(lessonId) {
+            const selectElement = document.getElementById('status_' + lessonId);
+            const status = selectElement.value;
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/lessonStudent/edit/' + lessonId;
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'lessonId';
+            input.value = lessonId;
+            form.appendChild(input);
+
+            const inputStatus = document.createElement('input');
+            inputStatus.type = 'hidden';
+            inputStatus.name = 'status';
+            inputStatus.value = status;
+            form.appendChild(inputStatus);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+    <style>
+        * {
+            font-size: x-large;
+            align-items: center;
+            margin: auto;
+        }
+
+        header {
+            text-align: center;
+            background: #78e142;
+        }
+
+        table {
+            width: 97%;
+            margin: auto;
+            border-collapse: collapse;
+            font-size: x-large;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddf8cd;
+            cursor: pointer;
+            text-size-adjust: auto;
+        }
+
+        th {
+            background-color: #78e142;
+        }
+
+        tr:hover {
+            background-color: #bbfc9a;
+        }
+
+        button {
+            width: 90%;
+            margin: auto;
+            padding: 10px;
+            background-color: #5c7550;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #31412b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .context {
+            width: 100%;
+            position: absolute;
+            top: 50vh;
+        }
+
+        .context h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 50px;
+        }
+
+        .area {
+            background: #31412b;
+            background: -webkit-linear-gradient(to left, #a3d9a5, #78e142);
+            width: 100%;
+            height: 100vh;
+            padding: 3%;
+            margin-bottom: 7%;
+        }
+
+        .circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+
+        }
+
+        .circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .circles li:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .circles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+
+        .circles li:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        .circles li:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+
+        .circles li:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+
+        .circles li:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+
+        .circles li:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+    </style>
+<body>
+<div th:insert="~{header :: header}"></div>
+<div class="context">
+    <h1>Мои занятия</h1>
+</div>
+<div class="area">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<table id="myTable">
+    <thead>
+    <tr>
+        <th onclick="sortTable(0)">ID занятия</th>
+        <th onclick="sortTable(1)">Направление</th>
+        <th onclick="sortTable(2)">Длительность (в минутах)</th>
+        <th onclick="sortTable(3)">Цена</th>
+        <th onclick="sortTable(4)">Статус занятия</th>
+        <th>Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="lessonStudent : ${lessonStudents}">
+        <td th:text="${lessonStudent.getAClass().classId}"></td>
+        <td th:text="${lessonStudent.getAClass().specialization.specializationName}"></td>
+        <td th:text="${lessonStudent.getAClass().durationMinutes}"></td>
+        <td th:text="${lessonStudent.getAClass().price}"></td>
+        <td>
+            <select id="status_${lessonStudent.getAClass().classId}">
+                <option value="confirm_wait">Ожидает подтверждения</option>
+                <option value="cancelled">Отклонено</option>
+                <option value="payment_wait">Ожидает оплаты</option>
+                <option value="paid">Оплачено</option>
+                <option value="time_moved">Перенесено</option>
+                <option value="conducted">Проведено</option>
+            </select>
+        </td>
+        <td>
+            <button onclick="submitForm(${lessonStudent.getAClass().classId})">Подтвердить</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

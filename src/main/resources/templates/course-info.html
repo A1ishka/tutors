@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Индивидуальная страница курса</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<style>
+    * {
+        font-size: x-large;
+        align-items: center;
+        margin: auto;
+    }
+    header {
+        text-align: center;
+        background: #31412b;
+    }
+    #container {
+        background-color: #bff1c1;
+        margin-left: 20%;
+        margin-right: 20%;
+        margin-top: 5%;
+        padding: 5%;
+    }
+
+    button {
+        width: 90%;
+        margin: auto;
+        margin-left: 50px;
+        padding: 10px;
+        background-color: #5c7550;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #31412b;
+    }
+    h5{
+        align-items: center;
+    }
+</style>
+<body>
+
+<div th:insert="~{header :: header}"></div>
+<div id="container">
+    <div>
+        <h2 th:text="${course.courseName}"></h2>
+        <p th:text="${course.description}"></p>
+        <p>Длительность: <span th:text="${course.duration.type}"></span>, <span
+                th:text="${course.duration.duration}"></span></p>
+        <p>Стоимость: <span th:text="${course.price}"></span> BYN</p>
+        <p>Категория: <span th:text="${course.specialization.specializationName}"></span></p>
+        <p>Преподаватель: <span th:text="${course.tutor.fullName}"></span></p>
+    </div>
+
+    <div>
+        <h5>Регистрация на курс</h5>
+        <form th:action="@{/course-students/add/{courseId}/{userId}(courseId=${courseId}, userId=${user.userId})}"
+              method="post">
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+    </div>
+</div>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

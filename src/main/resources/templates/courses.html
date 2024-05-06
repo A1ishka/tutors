@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Курсы</title>
+    <style>
+        body{
+            font-size: xx-large;
+        }
+        body{
+            padding-left: 30px;
+            padding-top: 50px;
+            padding-right: 15px;
+        }
+        div{
+            margin: 1%;
+        }
+        .course-container {
+            border: 1px solid #ccc;
+            border-radius: 35px;
+            padding: 5%;
+            background-color: #cfead1;
+            margin: 5%;
+            margin-left: 10%;
+        }
+        a {
+            color: #090808;
+        }
+        .course-name {
+            font-weight: bold;
+        }
+
+        .course-description {
+            margin-top: 5px;
+        }
+
+        .course-price {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input{
+            width: 25%;
+            height: 120%;
+            padding: 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 60px;
+        }
+        select {
+            width: 15%;
+            height: 120%;
+            margin: auto;
+            padding: 10px;
+            background-color: #5c7550;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        * {
+            font-size: x-large;
+            align-items: center;
+            margin: auto;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            background: #31412b;
+        }
+        .context {
+            width: 100%;
+            position: absolute;
+            top: 50vh;
+        }
+
+        .context h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 50px;
+        }
+
+        .area {
+            background: #31412b;
+            background: -webkit-linear-gradient(to left, #a3d9a5, #78e142);
+            width: 100%;
+            height: 100vh;
+            padding: 3%;
+            margin-bottom: 7%;
+        }
+
+        .circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+
+        }
+
+        .circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+
+        .circles li:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .circles li:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .circles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+
+        .circles li:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        .circles li:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+
+        .circles li:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+
+        .circles li:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+
+        .circles li:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div th:insert ="~{header :: header}"></div>
+<div class="context">
+    <h1>Все курсы</h1>
+</div>
+<div class="area">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<!--<div id="courses-container">-->
+<!--    <div th:each="course : ${courses}" class="course-container">-->
+<!--        <a th:href="@{/course/{courseId}(courseId=${course.courseId})}" th:text="${course.courseName}"></a>-->
+<!--        <div class="course-name" th:text="${course.courseName}"></div>-->
+<!--        <div class="course-description" th:text="${course.description}"></div>-->
+<!--        <div class="course-price" th:text="'Цена: ' + ${course.price}"></div>-->
+<!--    </div>-->
+<!--</div>-->
+<div id="courses-container">
+    <div class="filter-container">
+        <label for="duration-filter">Фильтр по длительности:</label>
+        <select id="duration-filter" onchange="filterCourses()">
+            <option value="">Все</option>
+            <option value="марафон">Марафон</option>
+            <option value="краткосрочный">Краткосрочный</option>
+            <option value="среднесрочный">Среднесрочный</option>
+            <option value="длительный">Длительный</option>
+            <option value="интенсив">Интенсив</option>
+        </select>
+    </div>
+
+    <div class="sort-container">
+        <label for="sort-select">Сортировка:</label>
+        <select id="sort-select" onchange="sortCourses()">
+            <option value="courseName">По названию</option>
+            <option value="price">По цене</option>
+        </select>
+    </div>
+
+    <div class="search-container">
+        <label for="search-input">Поиск:</label>
+        <input type="text" id="search-input" oninput="filterCourses()" placeholder="Введите название курса">
+    </div>
+
+    <div th:each="course : ${courses}" class="course-container" data-course-name="${course.courseName}">
+        <a th:href="@{/course/{courseId}(courseId=${course.courseId})}" th:text="${course.courseName}"></a>
+        <div class="course-name" th:text="${course.courseName}"></div>
+        <div class="course-description" th:text="${course.description}"></div>
+        <input type="hidden" data-duration="${course.duration.type}" />
+        <div class="course-price" th:text="'Цена: ' + ${course.price}"></div>
+    </div>
+</div>
+
+<script>
+    const searchInput = document.getElementById('search-input');
+    const durationFilter = document.getElementById('duration-filter');
+    const sortSelect = document.getElementById('sort-select');
+    const courseContainers = Array.from(document.getElementsByClassName('course-container'));
+
+    searchInput.addEventListener('input', filterCourses);
+    durationFilter.addEventListener('change', filterCourses);
+    sortSelect.addEventListener('change', sortCourses);
+
+    function filterCourses() {
+        const searchValue = searchInput.value.toLowerCase();
+        const durationValue = durationFilter.value;
+
+        courseContainers.forEach(courseContainer => {
+            const courseName = courseContainer.getAttribute('data-course-name').toLowerCase();
+            const duration = courseContainer.querySelector('.data-duration').getAttribute('data-duration');
+
+            const showCourse =
+                courseName.includes(searchValue) &&
+                (durationValue === '' || duration === durationValue);
+
+            courseContainer.style.display = showCourse ? 'block' : 'none';
+        });
+    }
+
+    function sortCourses() {
+        const sortValue = sortSelect.value;
+
+        courseContainers.sort((containerA, containerB) => {
+            const valueA = sortValue === 'courseName' ? containerA.getAttribute('data-course-name').toLowerCase() : parseFloat(containerA.querySelector('.course-price').textContent.replace('Цена: ', ''));
+            const valueB = sortValue === 'courseName' ? containerB.getAttribute('data-course-name').toLowerCase() : parseFloat(containerB.querySelector('.course-price').textContent.replace('Цена: ', ''));
+
+            if (valueA < valueB) return -1;
+            if (valueA > valueB) return 1;
+            return 0;
+        });
+
+        const coursesContainer = document.getElementById('courses-container');
+        courseContainers.forEach(courseContainer => coursesContainer.appendChild(courseContainer));
+    }
+</script>
+<div th:insert ="~{footer :: footer}"></div>
+</body>
+</html>
