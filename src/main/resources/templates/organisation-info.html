@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<style>
+    * {
+        font-size: x-large;
+        align-items: center;
+        margin: auto;
+    }
+    header {
+        text-align: center;
+        background: #31412b;
+    }
+    .organization-card {
+        background-color: #bff1c1;
+        margin-left: 20%;
+        margin-right: 20%;
+        margin-top: 5%;
+        padding: 5%;
+    }
+
+    .organization-card button {
+        width: 90%;
+        margin: auto;
+        margin-left: 50px;
+        padding: 10px;
+        background-color: #5c7550;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #31412b;
+    }
+
+    a {
+        color: #090808;
+    }
+
+    #card-container {
+        display: flex;
+        overflow-x: scroll;
+        scroll-behavior: smooth;
+        gap: 20px;
+        padding: 20px;
+        padding-inline: 20px;
+        scroll-snap-type: x mandatory;
+    }
+
+    #card {
+        flex-shrink: 0;
+        width: 300px;
+        scroll-snap-align: start;
+        background-color: #daefdb;
+    }
+
+    .name {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    #card footer {
+        display: flex;
+        gap: 20px;
+        padding-top: 20px;
+        padding-left: 5px;
+        background-color: #e6ece6;
+    }
+
+    #card .left,
+    #card .right {
+        flex-grow: 1;
+    }
+
+    #card .title {
+        font-weight: bold;
+    }
+
+    #card .content {
+        font-size: 16px;
+    }
+
+    .title {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .content {
+        font-size: 14px;
+    }
+
+    #prev-button,
+    #next-button {
+        background-color: #a3d9a5;
+        border: none;
+        border-radius: 50%;
+        color: #333;
+        cursor: pointer;
+        font-size: 24px;
+        padding: 10px;
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+
+    #prev-button {
+        left: 10px;
+    }
+
+    #next-button {
+        right: 10px;
+    }
+</style>
+<body>
+
+<div th:insert="~{header :: header}"></div>
+
+<div class="organization-card">
+    <h3 th:text="${organization.organizationName}"></h3>
+    <p><strong>Год основания:</strong> <span th:text="${organization.yearFounded}"></span></p>
+    <p><strong>Количество сотрудников:</strong> <span th:text="${organization.employeeCount}"></span></p>
+    <p th:text="${organization.organizationDescription}"></p>
+</div>
+
+<div th:if="${not #lists.isEmpty(organization_tutors)}">
+    <div class="organization-card">
+        <div>
+            <div id="card-container">
+                <div th:each="organization_tutor : ${organization_tutors}" class="card">
+                    <div id="card">
+                        <a th:href="@{/tutor/{tutorId}(tutorId=${organization_tutor.tutor.tutorId})}">
+                            <main>
+                                <div class="name" th:text="${organization_tutor.tutor.fullName}"></div>
+                                <!--                        <p th:text="${organization_tutor.tutor.info}" class="p-card"></p>-->
+                            </main>
+                            <footer>
+                                <div class="left">
+                                    <div class="title">experience</div>
+                                    <div class="content" th:text="${organization_tutor.tutor.experience}"></div>
+                                </div>
+                                <div class="right">
+                                    <div class="title">start date</div>
+                                    <div class="content" th:text="${organization_tutor.startDate}"></div>
+                                </div>
+                            </footer>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br><br>
+    <div>
+        <button>
+            <a th:href="@{/organization-courses/{organizationId}(organizationId=${organization.organizationId})}">Открыть
+                курсы</a></button>
+    </div>
+</div>
+<button id="prev-button">&lt;</button>
+<button id="next-button">&gt;</button>
+
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>
