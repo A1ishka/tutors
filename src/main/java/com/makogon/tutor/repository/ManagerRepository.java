@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface ManagerRepository extends JpaRepository<Manager, Long> {
+    @SuppressWarnings("NullableProblems")
     List<Manager> findAll();
     Manager findByManagerId(long managerId);
+    Manager findByUserUserId(long userId);
 }

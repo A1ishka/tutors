@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Менеджеры</title>
+</head>
+<style>
+    * {
+        font-size: x-large;
+        align-items: center;
+        margin: auto;
+    }
+    header {
+        text-align: center;
+        background: #31412b;
+    }
+    h1 {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    table {
+         width: 97%;
+         margin: auto;
+         border-collapse: collapse;
+         font-size: x-large;
+     }
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddf8cd;
+        cursor: pointer;
+        text-size-adjust: auto;
+        height: 50px;
+    }
+    th {
+        background-color: #719461;
+        height: 70px;
+    }
+    tr:hover {
+        background-color: #bbfc9a;
+    }
+    button {
+        width: 90%;
+        height: 45px;
+        margin: auto;
+        padding: 10px;
+        background-color: #5c7550;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: large;
+    }
+    button:hover {
+        background-color: #31412b;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .context {
+        width: 100%;
+        position: absolute;
+        top: 50vh;
+    }
+    .context h1 {
+        text-align: center;
+        color: #fff;
+        font-size: 50px;
+    }
+    .area {
+        background: #31412b;
+        background: -webkit-linear-gradient(to left, #a3d9a5, #78e142);
+        width: 100%;
+        height: 100vh;
+        padding: 3%;
+        margin-bottom: 7%;
+    }
+    .circles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    .circles li {
+        position: absolute;
+        display: block;
+        list-style: none;
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        animation: animate 25s linear infinite;
+        bottom: -150px;
+
+    }
+    .circles li:nth-child(1) {
+        left: 25%;
+        width: 80px;
+        height: 80px;
+        animation-delay: 0s;
+    }
+    .circles li:nth-child(2) {
+        left: 10%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 2s;
+        animation-duration: 12s;
+    }
+    .circles li:nth-child(3) {
+        left: 70%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 4s;
+    }
+    .circles li:nth-child(4) {
+        left: 40%;
+        width: 60px;
+        height: 60px;
+        animation-delay: 0s;
+        animation-duration: 18s;
+    }
+    .circles li:nth-child(5) {
+        left: 65%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 0s;
+    }
+    .circles li:nth-child(6) {
+        left: 75%;
+        width: 110px;
+        height: 110px;
+        animation-delay: 3s;
+    }
+    .circles li:nth-child(7) {
+        left: 35%;
+        width: 150px;
+        height: 150px;
+        animation-delay: 7s;
+    }
+    .circles li:nth-child(8) {
+        left: 50%;
+        width: 25px;
+        height: 25px;
+        animation-delay: 15s;
+        animation-duration: 45s;
+    }
+    .circles li:nth-child(9) {
+        left: 20%;
+        width: 15px;
+        height: 15px;
+        animation-delay: 2s;
+        animation-duration: 35s;
+    }
+    .circles li:nth-child(10) {
+        left: 85%;
+        width: 150px;
+        height: 150px;
+        animation-delay: 0s;
+        animation-duration: 11s;
+    }
+    @keyframes animate {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+            border-radius: 0;
+        }
+        100% {
+            transform: translateY(-1000px) rotate(720deg);
+            opacity: 0;
+            border-radius: 50%;
+        }
+    }
+</style>
+<body>
+<div th:insert ="~{header :: header}"></div>
+<div class="context">
+    <h1>Подробнее о менеджерах</h1>
+</div>
+<div class="area">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<table>
+    <tr>
+        <th>ID Менеджера</th>
+        <th>Полное имя</th>
+        <th>Организация</th>
+        <th>Действие</th>
+    </tr>
+    <tr th:each="manager : ${managers}">
+        <td th:text="${manager.managerId}"></td>
+        <td th:text="${manager.fullName}"></td>
+        <td th:text="${manager.organization.organizationName}"></td>
+        <td>
+            <form th:action="@{/manager/delete/{managerId}(managerId=${manager.managerId})}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+</table>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>
