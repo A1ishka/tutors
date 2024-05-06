@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            font-size: x-large;
+            align-items: center;
+            margin: auto;
+        }
+        header {
+            text-align: center;
+            background: #31412b;
+        }
+        button {
+            width: 10%;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #78e142;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #map {
+            height: 30em;
+        }
+        h2 {
+            font-size: 33px;
+            align-content: center;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .context {
+            width: 100%;
+            position: absolute;
+            top: 50vh;
+        }
+        .context h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 50px;
+        }
+        .area {
+            background: #31412b;
+            background: -webkit-linear-gradient(to left, #a3d9a5, #78e142);
+            width: 100%;
+            height: 100vh;
+            padding: 3%;
+            margin-bottom: 7%;
+        }
+        .circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+
+        }
+        .circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+        .circles li:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+        .circles li:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+        .circles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+        .circles li:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+        .circles li:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+        .circles li:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+        .circles li:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+        .circles li:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+        .circles li:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div th:insert ="~{header :: header}"></div>
+<div class="context">
+    <h1>Подробнее о команде разработки веб-приложения</h1>
+</div>
+<div class="area">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<div class="map-div">
+    <div id="map"></div>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=7ddbcd1a-5a9c-47cd-a6a2-28c27db7adfd&lang=ru_RU"
+            type="text/javascript"></script>
+    <script>
+        ymaps.ready(init);
+
+        function init() {
+            var myMap = new ymaps.Map("map", {
+                center: [53.911583, 27.595727],
+                zoom: 13
+            });
+
+            var myPlacemark1 = new ymaps.Placemark([53.918873, 27.593756], {
+                hintContent: 'Молодежный пункт',
+                balloonContent: 'Можно встретить особенно здоровое питание и фигуру'
+            });
+
+            var myPlacemark2 = new ymaps.Placemark([53.912091, 27.594754], {
+                    hintContent: 'Центр печати',
+                    balloonContent: 'Здесь робокопи лучше, чем в пятом корпусе'
+                },
+                {
+                    preset: "islands#circleDotIcon",
+                    iconColor: '#440755'
+                });
+
+            var myPlacemark3 = new ymaps.Placemark([53.911583, 27.595727], {
+                    hintContent: 'Административный центр',
+                    balloonContent: 'Дела делаются здесь'
+                },
+                {
+                    preset: "islands#circleDotIcon",
+                    iconColor: '#440755'
+                });
+
+            var myPlacemark4 = new ymaps.Placemark([53.903053, 27.598355], {
+                hintContent: 'Инновационный центр',
+                balloonContent: 'Разработка новых идей'
+            });
+
+            var myPlacemark5 = new ymaps.Placemark([53.92551821073716, 27.59412495173361], {
+                    hintContent: 'Общежитие для работников',
+                    balloonContent: 'Они здесь кушают и спят'
+                },
+                {
+                    preset: "islands#circleDotIcon",
+                    iconColor: '#440755'
+                });
+
+            myMap.geoObjects.add(myPlacemark1);
+            myMap.geoObjects.add(myPlacemark2);
+            myMap.geoObjects.add(myPlacemark3);
+            myMap.geoObjects.add(myPlacemark4);
+            myMap.geoObjects.add(myPlacemark5);
+        }
+    </script>
+</div>
+<div th:insert ="~{footer :: footer}"></div>
+</body>
+</html>

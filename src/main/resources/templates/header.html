@@ -1,18 +1,186 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <header th:fragment="header">
+    <style>
+        header {
+            text-align: center;
+            background: #31412b;
+        }
+        header a{
+            color: black;
+        }
+        .menu {
+            display: flex;
+            height: 7%;
+        }
+        .menu a {
+            margin-right: 10px;
+        }
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+        }
+        .mobile-menu span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background-color: #000;
+            margin-bottom: 4px;
+        }
+        @media (max-width: 768px) {
+            .menu {
+                display: none;
+            }
+            .mobile-menu {
+                display: block;
+            }
+        }
+        #menu__toggle {
+            opacity: 0;
+        }
+        #menu__toggle:checked ~ .menu__btn > span {
+            transform: rotate(45deg);
+        }
+        #menu__toggle:checked ~ .menu__btn > span::before {
+            top: 0;
+            transform: rotate(0);
+        }
+        #menu__toggle:checked ~ .menu__btn > span::after {
+            top: 0;
+            transform: rotate(90deg);
+        }
+        #menu__toggle:checked ~ .menu__box {
+            visibility: visible;
+            left: 0;
+        }
+        .menu__btn {
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+
+            width: 26px;
+            height: 26px;
+
+            cursor: pointer;
+            z-index: 1;
+        }
+        .menu__btn > span,
+        .menu__btn > span::before,
+        .menu__btn > span::after {
+            display: block;
+            position: absolute;
+
+            width: 100%;
+            height: 2px;
+
+            background-color: #616161;
+
+            transition-duration: .25s;
+        }
+        .menu__btn > span::before {
+            content: '';
+            top: -8px;
+        }
+        .menu__btn > span::after {
+            content: '';
+            top: 8px;
+        }
+        .menu__box {
+            display: block;
+            position: fixed;
+            visibility: hidden;
+            top: 0;
+            left: -100%;
+
+            width: 300px;
+            height: 100%;
+
+            margin: 0;
+            padding: 80px 0;
+
+            list-style: none;
+
+            background-color: #daead2;
+            box-shadow: 1px 0px 6px rgba(0, 0, 0, .2);
+
+            transition-duration: .25s;
+        }
+        .menu__item {
+            display: block;
+            padding: 12px 24px;
+
+            color: #333;
+
+            font-family: 'Roboto', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition-duration: .25s;
+        }
+        .menu__item:hover {
+            background-color: #cef8b8;
+        }
+    </style>
     <nav>
-        <ul>
-            <li><a href="/homepage">Главная</a></li>
-            <li><a href="/">Об организации</a></li>
-            <li th:if="${isLoggedIn}">
-                <a href="/logout">Выйти</a>
-            </li>
-            <li th:unless="${isLoggedIn}">
-                <a href="/login">Войти</a>
-            </li>
-        </ul>
+        <div class="hamburger-menu">
+            <input id="menu__toggle" type="checkbox" />
+            <label class="menu__btn" for="menu__toggle">
+                <span></span>
+            </label>
+
+            <ul class="menu__box">
+                <li><a class="menu__item" href="/homepage">Главная</a></li>
+                <li><a class="menu__item" href="/">Проекты</a></li>
+                <li><a class="menu__item" href="/organizations">Преподаватели по организациям</a></li>
+                <li><a class="menu__item" href="/class-student">Занятия по студентам</a></li>
+                <li><a class="menu__item" href="/course-students">Проекты</a></li>
+                <li><a class="menu__item" href="/students">Команда</a></li>
+                <li><a class="menu__item" href="/managers">Блог</a></li>
+                <li><a class="menu__item" href="/map">Контакты</a></li>
+            </ul>
+        </div>
+        <div class="menu">
+            <a href="/homepage">Главная</a>
+            <a href="/tutors">Преподаватели</a>
+
+            <a href="/courses">Курсы</a>
+<!--            <a th:if="${user != null}" th:href="@{/classes-${#strings.toLowerCase(user.role)}}"><img src="/pen-icon.png" alt="pen-icon" width="80"></a>-->
+            <a href="/login"><img src="/profile-icon.png" alt="profile-icon" width="80"></a>
+        </div>
+        <div class="mobile-menu">
+            мои курсы
+            записи на курсы
+
+            админ:
+            менеджеры, пользователи, тьюторы, организации
+            (((с расширенными правами)))
+
+            менеджер:
+            редачит свою организацию
+            может подтверждать записи на курсы в организации
+            (страчка курсов!!)
+
+            тьютор:
+            свои записи редачит
+            свою страничку редачит
+
+            <a th:href="@{/classes/{studentId}(studentId=${studentId})}">Мои занятия</a>
+            <a th:href="@{/courses/{studentId}(studentId=${studentId})}">Мои курсы</a>
+            <a th:href="@{/student/{studentId}(studentId=${studentId})}">Мой профиль</a>
+
+            <a href="/classes-tutor">Мои занятия</a>
+            <a th:href="@{/tutor/{tutorId}(tutorId=${tutorId})}">Мой профиль</a>
+
+            <a href="/organisation/create">Создание организации</a>
+            <a th:href="@{/manager/{managerId}(managerId=${managerId})}">Мой профиль</a>
+
+        </div>
     </nav>
+
 </header>

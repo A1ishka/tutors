@@ -7,10 +7,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <style>
-    body {
-        align-content: center;
+    * {
+        font-size: large;
+        align-items: center;
+        margin: auto;
     }
-
+    header {
+        text-align: center;
+        background: #31412b;
+    }
     .container {
         width: 30%;
         margin: 0 auto;
@@ -85,7 +90,7 @@
         <br>
         <input type="submit" value="Войти">
     </form>
-    <p>Если у вас нет аккаунта, <a href="registration.html">зарегистрируйтесь</a>.</p>
+    <p>Если у вас нет аккаунта, <a th:href="@{/registration-step-1}">зарегистрируйтесь</a>.</p>
 </div>
 
 <div th:replace="~{footer :: footer}"></div>
