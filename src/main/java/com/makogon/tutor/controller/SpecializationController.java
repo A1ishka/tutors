@@ -37,7 +37,7 @@ public class SpecializationController {
     public String deleteSpecialization(@PathVariable String specializationId) {
         long longId = IdToLong.convert(specializationId);
         specializationService.deleteSpecialization(longId);
-        return "redirect:/specialization";
+        return "redirect:/success";
     }
 
     @GetMapping("/specialization/create")
@@ -48,14 +48,14 @@ public class SpecializationController {
     @PostMapping("/specialization/add")
     public String addSpecialization(Specialization specialization) {
         specializationService.saveSpecialization(specialization);
-        return "redirect:/specialization";
+        return "redirect:/success";
     }
 
     @PostMapping("/specialization/edit/{specializationId}")
     public String editSpecialization(@PathVariable String specializationId, Specialization specialization) {
         long longId = IdToLong.convert(specializationId);
         specializationService.editSpecialization(longId, specialization);
-        return "redirect:/specialization";
+        return "redirect:/success";
     }
 
     @GetMapping("/specialization/{specializationId}")

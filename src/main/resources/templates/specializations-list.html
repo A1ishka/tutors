@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div th:include ="~{header :: header}"></div>
+
+<table><tr>
+    <td class="categories">
+        <h1>Категории</h1>
+        <div class="search_categories">
+            <input type="text" id="searchCInput" placeholder="Поиск">
+            <br>
+            <button onclick="searchCategory()">Найти</button>
+            <div class="sort-buttons">
+                <button onclick="sortAlphabetically()">
+                    <i class="fas fa-sort-alpha-down"></i>
+                </button>
+                <button onclick="sortReverseAlphabetically()">
+                    <i class="fas fa-sort-alpha-up"></i>
+                </button>
+            </div>
+        </div>
+        <div class="categories-card">
+
+            <ul>
+                <li th:each="category : ${categories}" class="category-item">
+                    <a th:href="@{/category/{categoryID}(categoryID=${category.categoryID})}"
+                       th:text="${category.category}"></a>
+                </li>
+            </ul>
+        </div>
+    </td>
+    <td></tr>
+</table>
+
+
+<div th:include ="~{footer :: footer}"></div>
+</body>
+</html>
